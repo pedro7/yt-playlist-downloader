@@ -3,7 +3,6 @@ from pytube import Playlist, YouTube
 from sys import exit
 
 def download_playlist(url, resolution, path):
-    print(resolution)
     try:
         playlist = Playlist(url)
         for video in playlist.videos:
