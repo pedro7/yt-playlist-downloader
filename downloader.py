@@ -69,22 +69,21 @@ class Downloader(QWidget):
         if not path:
             return
 
-        self.button.setDisabled(True)
+        self.button.setEnabled(False)
 
         self.worker = DownloadWorker()
-        self.thread = QThread(parent=self)
+        self.thread = QThread()
 
         self.worker.moveToThread(self.thread)
 
         self.download_requested.connect(self.worker.download_playlist)
         self.worker.progress.connect(self.update_label)
         self.worker.finished.connect(self.update_label)
+        self.worker.finished.connect(lambda: self.button.setEnabled(True))
 
         self.thread.start()
 
         self.download_requested.emit(url, resolution, path)
-
-        self.button.setEnabled(True)
 
     def update_label(self, text):
         self.label.setText(text)
